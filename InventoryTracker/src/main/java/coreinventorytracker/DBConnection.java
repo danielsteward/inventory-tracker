@@ -6,6 +6,7 @@
 package coreinventorytracker;
 
 import inventoryutilities.InvExceptions;
+import inventoryutilities.InvUtilities;
 import inventoryutilities.PropertiesGetter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +16,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,12 +38,12 @@ public class DBConnection {
     private InvExceptions utility;
     private static Connection conn;
 
-    public DBConnection() throws FileNotFoundException, IOException, InvalidPropertiesFormatException {
+    public DBConnection() {
         //super();
         //utility = new PEDExceptions();
         conn = null;
         //set connection properties.
-        props = PropertiesGetter.getProps("connection_properties.xml");
+        props = PropertiesGetter.getProps("connection_properties.xml"); //catch(FileNotFoundException | IOException | InvalidPropertiesFormatException){
         this.dbms = this.props.getProperty("dbms");
         this.driver = this.props.getProperty("driver");
         this.dbName = this.props.getProperty("database_name");
@@ -49,54 +52,30 @@ public class DBConnection {
         this.serverName = this.props.getProperty("server_name");
         this.portNumber = Integer.parseInt(this.props.getProperty("port_number"));
         System.out.println(dbms+driver+dbName+username+password+serverName+portNumber);
-    }
-//NO LONGER USED.
-    public void setProperties(String fileName) throws FileNotFoundException,
-            IOException,
-            InvalidPropertiesFormatException {
-        this.props = new Properties();
-        FileInputStream fis = new FileInputStream(fileName);
-        props.loadFromXML(fis);
-    //props.setProperty("username", this.username);
-        //props.setProperty("password", this.password);
-        this.dbms = this.props.getProperty("dbms");
-        this.driver = this.props.getProperty("driver");
-        this.dbName = this.props.getProperty("database_name");
-        this.username = this.props.getProperty("username");
-        this.password = this.props.getProperty("password");
-        this.serverName = this.props.getProperty("server_name");
-        this.portNumber = Integer.parseInt(this.props.getProperty("port_number"));
+            
+        }
 
-        //System.out.println("Set the following properties:");
-        //System.out.println("dbms: " + dbms);
-        //System.out.println("driver: " + driver);
-        //System.out.println("dbName: " + dbName);
-        //System.out.println("username: " + username);
-        //System.out.println("serverName: " + serverName);
-        //System.out.println("portNumber: " + portNumber);
-    }
+
 
     /**
-     * Makes a connection with the DB without username and password as these are
+     * Makes a connection with the DB without username and password hard coded as these are
      * in the properties xml document.
      *
      * @throws java.sql.SQLException
      */
-    public Connection getConnection() throws SQLException {
-        
+    public Connection getConnection() {
+
         Connection conn = null;
-        try{
-        //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Class.forName("com.mysql.jdbc.Driver");
-        /*conn = DriverManager.getConnection("jdbc:" + this.props.getProperty("dbms") + "://" + this.props.getProperty("server_name")
-                        + ":" + Integer.parseInt(this.props.getProperty("port_number")) + ";"
-                        + this.props.getProperty("username") + ";" + this.props.getProperty("password") + ";");*/
-    conn = DriverManager.getConnection("jdbc:mysql://mysql.a3computersupport.co.uk/march18ped?" +
-    "user=danst&password=ketchUp1850");
-        System.out.println(conn.toString());
-        }
-        catch(Exception ex){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://mysql.a3computersupport.co.uk/march18ped?"
+                    + "user=danst&password=ketchUp1850");
+            System.out.println(conn.toString());
+        } catch (SQLException ex) {
             System.out.println("Exception in DBConnection.getConnection() is " + ex.getMessage());
+            
+        } catch (ClassNotFoundException cnf) {
+
         }
         System.out.println("Successful connection");
         return conn;
