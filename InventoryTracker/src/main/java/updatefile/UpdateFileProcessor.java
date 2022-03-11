@@ -162,12 +162,12 @@ public class UpdateFileProcessor
                 if(thePlant.isDataFormatOK()){//if the format of the data is ok replace some String values with objects and continue processing.
                     drnc.setCurrentDRN(thePlant.getDetailRecordNo());
                     drnc.checkDRN();//checks the sequence nos. are incrementing correctly.
-                    thePlant.setName("the name");
+                    thePlant.setCommonName("the name");
                     //thePlant.setMake(DEVICEMakeEnum.valueOf(thePlant.getMakeSt()));
                     //thePlant.setModel(DEVICEModelEnum.valueOf(thePlant.getModelSt()));
                     //thePlant.setPedStatus(DEVICEStatusEnum.valueOf(thePlant.getPedStatusSt()));
                     //System.out.println("The Ped should be fully set now as "+thePlant.toString());
-                    serialNo = thePlant.getName();
+                    serialNo = thePlant.getCommonName();
                 if (utils.checkPEDFromDB(serialNo) == false) {//if DEVICE new (no record found) add DEVICE to DB.
                     utils.addPEDToDB(thePlant);// System.out.println("adding " + serialNo + " to DB.");
                     rr.writeToFile("Detail record number " + thePlant.getDetailRecordNo() + " with serial no."

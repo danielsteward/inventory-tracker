@@ -10,6 +10,19 @@ package coreinventorytracker;
  */
 public enum AllocatedToCustomer {
     
-    YES, NO, UNKNOWN;
+    YES("Yes"), NO("No"), UNKNOWN("Unknown");
+    private final String allocatedToCustomerString;
     
+    AllocatedToCustomer(String allocated){
+        this.allocatedToCustomerString = allocated;
+    }
+    
+    public String getAllocatedToCustormerString(){
+        return this.allocatedToCustomerString;
+    }
+    
+    @Override
+    public String toString(){
+        return allocatedToCustomerString;
+    }
 }
