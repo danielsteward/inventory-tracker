@@ -4,6 +4,7 @@
  */
 package coreinventorytracker;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class PlantUnit {
     private AllocatedToCustomer customerAllocation;
     private String customerName;
     private String plantByDate;
+    private String timeOfLastEdit;
     
     public PlantUnit(){
         
@@ -45,7 +47,7 @@ public class PlantUnit {
     }
     
     public PlantUnit(int index, String commonName, String latinName, String flowerColour, PlantUnitStatus plantUnitStatus,
-            int numberPlantsInUnit, PlantUnitSize unitSize, AllocatedToCustomer customerAllocation, String customerName, String plantByDate) {
+            int numberPlantsInUnit, PlantUnitSize unitSize, AllocatedToCustomer customerAllocation, String customerName, String plantByDate, String timeOfLastEdit) {
         this.unitNo = index;
         this.commonName = commonName;
         this.latinName = latinName;
@@ -56,6 +58,7 @@ public class PlantUnit {
         this.customerAllocation = customerAllocation;
         this.customerName = customerName;
         this.plantByDate = plantByDate;
+        this.timeOfLastEdit = timeOfLastEdit;
     }
 
     public int getUnitNo() {
@@ -90,7 +93,7 @@ public class PlantUnit {
         this.flowerColour = flowerColour;
     }
 
-    public PlantUnitStatus getPlantUnitStatusEnum() {
+    public PlantUnitStatus getPlantUnitStatus() {
         return plantUnitStatus;
     }
     
@@ -110,7 +113,7 @@ public class PlantUnit {
         this.numberPlantsInUnit = numberPlantsInUnit;
     }
 
-    public PlantUnitSize getUnitSizeEnum() {
+    public PlantUnitSize getUnitSize() {
         return unitSize;
     }
     
@@ -122,7 +125,7 @@ public class PlantUnit {
         this.unitSize = unitSize;
     }
 
-    public AllocatedToCustomer getCustomerAllocationEnum() {
+    public AllocatedToCustomer getCustomerAllocation() {
         return customerAllocation;
     }
     
@@ -150,9 +153,20 @@ public class PlantUnit {
         this.plantByDate = plantByDate;
     }
     
+    public String getTimeOfLastEdit() {
+        return timeOfLastEdit;
+    }
+    
+    public void setTimeOfLastEdit(String timeOfLastEdit) {
+        this.timeOfLastEdit = timeOfLastEdit;
+    }
+    
     @Override
     public String toString() {
-        return "PlantUnit{" + "unitNo=" + unitNo + ", commonName=" + commonName + ", latinName=" + latinName + ", flowerColour=" + flowerColour + ", plantUnitStatus=" + plantUnitStatus + ", numberPlantsInUnit=" + numberPlantsInUnit + ", unitSize=" + unitSize + ", customerAllocation=" + customerAllocation + ", customerName=" + customerName + ", plantByDate=" + plantByDate + '}';
+        return "PlantUnit{" + "unitNo=" + unitNo + ", commonName=" + commonName + ", latinName=" + latinName + 
+                ", flowerColour=" + flowerColour + ", plantUnitStatus=" + plantUnitStatus + ", numberPlantsInUnit=" + 
+                numberPlantsInUnit + ", unitSize=" + unitSize + ", customerAllocation=" + customerAllocation + ", customerName=" + 
+                customerName + ", plantByDate=" + plantByDate + ", last edit =" + timeOfLastEdit + '}';
     }
 
         @Override
@@ -226,6 +240,10 @@ public class PlantUnit {
     public int getDetailRecordNo() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    
+
+    
 
     
 

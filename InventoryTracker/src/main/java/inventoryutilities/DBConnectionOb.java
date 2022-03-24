@@ -55,7 +55,7 @@ public class DBConnectionOb {
         this.portNumber = Integer.parseInt(this.props.getProperty("port_number"));
         
         System.out.println("props are " + props.toString());
-
+//        System.out.println("Connection is "+ conn.toString());
     }
 
     public static DBConnectionOb getInstance() {
@@ -74,11 +74,17 @@ public class DBConnectionOb {
     }
     
     // Returns a Statement.
-    public Statement getStatement() throws SQLException{
+    public Statement getStatement(){
         this.conn = getConnection();
-        this.stmt = conn.createStatement();
+        try {
+            this.stmt = conn.createStatement();// This Statement is closed in PlantUnitDAO.insertUnit(PlantUnit pu) etc but does it need sorting here?
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnectionOb.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return this.stmt;
     }
+    
+    // Returns
     
     public ResultSet getResultSet(String sqlQuery) throws SQLException{
         this.conn = getConnection();
@@ -91,12 +97,12 @@ public class DBConnectionOb {
         //Connection conn = null;
         // Close the Connncection using try with resources but it needs to be returned and used so maybe do it when called?
         try {
-            conn = DriverManager.getConnection("jdbc:" + dbms + "://" + serverName + ":" + portNumber + "/" + dbName,
+            this.conn = DriverManager.getConnection("jdbc:" + dbms + "://" + serverName + ":" + portNumber + "/" + dbName,
                     username, password);
         } catch (SQLException ex) {
             Logger.getLogger(DBConnectionOb.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        System.out.println("This Connection in DBConnOb.getConnection() is "+ this.conn.toString());
         return conn;
     }
     
@@ -154,52 +160,6 @@ public class DBConnectionOb {
         return conn;
     }
     
-//    public void modifyPricesByPercentage(
-//    String coffeeName,
-//    float priceModifier,
-//    float maximumPrice) throws SQLException {
-//    con.setAutoCommit(false);
-//    ResultSet rs = null;
-//    String priceQuery = "SELECT COF_NAME, PRICE FROM COFFEES " +
-//                        "WHERE COF_NAME = ?";
-//    String updateQuery = "UPDATE COFFEES SET PRICE = ? " +
-//                         "WHERE COF_NAME = ?";
-//    try (PreparedStatement getPrice = con.prepareStatement(priceQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-//         PreparedStatement updatePrice = con.prepareStatement(updateQuery))
-//    {
-//      Savepoint save1 = con.setSavepoint();
-//      getPrice.setString(1, coffeeName);
-//      if (!getPrice.execute()) {
-//        System.out.println("Could not find entry for coffee named " + coffeeName);
-//      } else {
-//        rs = getPrice.getResultSet();
-//        rs.first();
-//        float oldPrice = rs.getFloat("PRICE");
-//        float newPrice = oldPrice + (oldPrice * priceModifier);
-//        System.out.printf("Old price of %s is $%.2f%n", coffeeName, oldPrice);
-//        System.out.printf("New price of %s is $%.2f%n", coffeeName, newPrice);
-//        System.out.println("Performing update...");
-//        updatePrice.setFloat(1, newPrice);
-//        updatePrice.setString(2, coffeeName);
-//        updatePrice.executeUpdate();
-//        System.out.println("\nCOFFEES table after update:");
-//        CoffeesTable.viewTable(con);
-//        if (newPrice > maximumPrice) {
-//          System.out.printf("The new price, $%.2f, is greater " +
-//                            "than the maximum price, $%.2f. " +
-//                            "Rolling back the transaction...%n",
-//                            newPrice, maximumPrice);
-//          con.rollback(save1);
-//          System.out.println("\nCOFFEES table after rollback:");
-//          CoffeesTable.viewTable(con);
-//        }
-//        con.commit();
-//      }
-//    } catch (SQLException e) {
-//      JDBCTutorialUtilities.printSQLException(e);
-//    } finally {
-//      con.setAutoCommit(true);
-//    }
-//  }
+
 
 }

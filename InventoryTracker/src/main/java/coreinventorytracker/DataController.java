@@ -35,6 +35,18 @@ public class DataController {
         }
         return puList;
     }
+    public List<PlantUnit> getPunitListSansIdNo(String sqlArg) throws SQLException{
+        List<PlantUnit> puList = puDAO.getPunitListSansIdNo(sqlArg);
+        return puList;
+    }
+    
+    public void insertUnitsToDB(List<PlantUnit> puList){
+        try {
+            puDAO.insertUnitsToDB(puList);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     //Write a single plant unit to the DB
     public void insertUnitToDB(PlantUnit pu) throws SQLException{
